@@ -29,8 +29,8 @@
                             <h4 ng-bind="task.text" />
                         </td>
                         <td class="col-xs-2 text-right">
-                            <button class="btn btn-default" ng-click="editTask(task.id)"><span class="glyphicon glyphicon-pencil"></span></button>
-                            <button class="btn btn-default" ng-click="finishTask(task.id)"><span class="glyphicon glyphicon-ok icon-success"></span></button>
+                            <button class="btn btn-default" ng-click="editTask(task.id)"><span class="glyphicon glyphicon-pencil text-primary"></span></button>
+                            <button class="btn btn-default" ng-click="finishTask(task.id)"><span class="glyphicon glyphicon-ok text-success"></span></button>
                         </td>
                     </tr>
                     <tr ng-if="filteredTasks.length == 0">
