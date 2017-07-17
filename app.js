@@ -3,9 +3,18 @@ angular.module('todolist',[])
     return {
         getAllTasks: function() {
             return [
-                'task no. 1',
-                'task no. 2',
-                'task no. 3'
+                {
+                    text: 'task no. 1',
+                    order: 1
+                },
+                {
+                    text: 'task no. 2',
+                    order: 2
+                },
+                {
+                    text: 'task no. 3',
+                    order: 3
+                }
             ];
         }
     };
