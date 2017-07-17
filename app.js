@@ -21,6 +21,17 @@ angular.module('todolist',[])
         }
     ];
     var keys = ['text','order','completed'];
+    var nextID = 4;
+
+    function maxOrder() {
+        var max = null;
+        tasks.forEach(function(task) {
+            if(!max || task.order > max)  {
+                max = task.order;
+            }
+        });
+        return max;
+    }
 
     return {
         getAllTasks: function() {
@@ -36,6 +47,18 @@ angular.module('todolist',[])
                     });
                 }
             });
+        },
+        newTask: function(data) {
+            var task = {
+                id: nextID,
+                text: data.text,
+                order: maxOrder() + 1,
+                completed: false
+            }
+
+            tasks.push(task);
+
+            nextID++;
         }
     };
 })
@@ -47,19 +70,22 @@ angular.module('todolist',[])
     function findTask(id) {
         return $filter('filter')($scope.tasks,{id:id})[0];
     }
-    
+
     $scope.editTask = function(id) {
         $scope.editing = id;
         $scope.form = angular.copy(findTask(id));
     }
 
-    $scope.updateTask = function() {
-        api.updateTask($scope.editing,$scope.form);
+    $scope.save = function() {
+        if($scope.editing) {
+            api.updateTask($scope.editing,$scope.form);
+        } else {
+            api.newTask($scope.form);
+        }
     }
 
     $scope.finishTask = function(id) {
         //TODO check for existence
         api.updateTask(id, {completed: true});
-        $scope.tasks = api.getAllTasks();
     }
 })
