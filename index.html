@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" href="lib/bootstrap.min.css">
-    <script src="lib/jquery.min.js"></script>
-    <script src="lib/angular.min.js"></script>
-    <script src="lib/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="lib/css/bootstrap.min.css">
+    <script src="lib/js/jquery.min.js"></script>
+    <script src="lib/js/angular.min.js"></script>
+    <script src="lib/js/bootstrap.min.js"></script>
 </head>
 <body ng-app="todolist" ng-cloak>
 <div class="container" ng-controller="ctrl">
-    <div class="row col-xs-8 col-xs-offset-2">
+    <div class="row col-sm-12 col-md-8 col-md-offset-2">
         <div class="row">
             <div class="col-xs-6">
                 <h1>todo list</h1>
@@ -25,14 +25,12 @@
             <div class="col-xs-12">
                 <table class="table table-hover">
                     <tr ng-repeat="task in filteredTasks = (tasks | filter:{completed:false}) | orderBy:'order'">
-                        <td class="col-xs-8">
+                        <td class="col-xs-10">
                             <h4 ng-bind="task.text" />
                         </td>
                         <td class="col-xs-2 text-right">
-                            <button class="btn btn-default" ng-click="editTask(task.id)">Edit</button>
-                        </td>
-                        <td class="col-xs-2 text-right">
-                            <button class="btn btn-default" ng-click="finishTask(task.id)">Finish</button>
+                            <button class="btn btn-default" ng-click="editTask(task.id)"><span class="glyphicon glyphicon-pencil"></span></button>
+                            <button class="btn btn-default" ng-click="finishTask(task.id)"><span class="glyphicon glyphicon-ok icon-success"></span></button>
                         </td>
                     </tr>
                     <tr ng-if="filteredTasks.length == 0">
