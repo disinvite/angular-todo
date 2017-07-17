@@ -71,17 +71,23 @@ angular.module('todolist',[])
         return $filter('filter')($scope.tasks,{id:id})[0];
     }
 
+    $scope.newTask = function() {
+        $scope.editing = 'new';
+        $scope.form = {};
+    }
+
     $scope.editTask = function(id) {
         $scope.editing = id;
         $scope.form = angular.copy(findTask(id));
     }
 
     $scope.save = function() {
-        if($scope.editing) {
-            api.updateTask($scope.editing,$scope.form);
-        } else {
+        if($scope.editing === 'new') {
             api.newTask($scope.form);
+        } else if ($scope.editing !== null) {
+            api.updateTask($scope.editing,$scope.form);
         }
+        $scope.editing = null;
     }
 
     $scope.finishTask = function(id) {
