@@ -20,15 +20,20 @@ angular.module('todolist',[])
             completed: false
         }
     ];
+    var keys = ['text','order','completed'];
 
     return {
         getAllTasks: function() {
             return tasks;
         },
-        finishTask: function(id) {
+        updateTask: function(id,data) {
             tasks.forEach(function(task) {
                 if(task.id == id) {
-                    task.completed = true;
+                    keys.forEach(function(key) {
+                        if(key in data) {
+                            task[key] = data[key];
+                        }
+                    });
                 }
             });
         }
@@ -36,10 +41,25 @@ angular.module('todolist',[])
 })
 .controller('ctrl',function($scope,$filter,api) {
     $scope.tasks = api.getAllTasks();
+    $scope.editing = null;
+    $scope.form = {};
+
+    function findTask(id) {
+        return $filter('filter')($scope.tasks,{id:id})[0];
+    }
+    
+    $scope.editTask = function(id) {
+        $scope.editing = id;
+        $scope.form = angular.copy(findTask(id));
+    }
+
+    $scope.updateTask = function() {
+        api.updateTask($scope.editing,$scope.form);
+    }
 
     $scope.finishTask = function(id) {
         //TODO check for existence
-        api.finishTask(id);
+        api.updateTask(id, {completed: true});
         $scope.tasks = api.getAllTasks();
     }
 })

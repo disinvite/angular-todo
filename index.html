@@ -16,8 +16,11 @@
         <div class="row col-xs-12">
             <table class="table table-hover">
                 <tr ng-repeat="task in filteredTasks = (tasks | filter:{completed:false}) | orderBy:'order'">
-                    <td class="col-xs-10">
+                    <td class="col-xs-8">
                         <h4 ng-bind="task.text" />
+                    </td>
+                    <td class="col-xs-2 text-right">
+                        <button class="btn btn-default" ng-click="editTask(task.id)">Edit</button>
                     </td>
                     <td class="col-xs-2 text-right">
                         <button class="btn btn-default" ng-click="finishTask(task.id)">Finish</button>
@@ -30,6 +33,24 @@
                 </tr>
             </table>
         </div>
+
+        <div class="row col-xs-12">
+            <hr/>
+        </div>
+
+        <div class="row col-xs-12">
+            <div class="form-group">
+                <input type="text" class="form-control" ng-model="form.text" placeholder="Task text" />
+            </div>
+            <div class="form-group">
+                <input type="number" class="form-control" ng-model="form.order" placeholder="Task order" />
+            </div>
+        </div>
+  
+        <div class="row col-xs-12">
+            <button class="btn btn-primary btn-block" ng-click="updateTask()">Save</button>
+        </div>
+
     </div>
 </div>
 <script src="app.js"></script>
