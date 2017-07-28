@@ -1,5 +1,5 @@
 angular.module('todolist',[])
-.service('api',function($q,$filter) {
+.service('mockapi',function($q,$filter) {
     var tasks = [
         {
             id: 1,
@@ -23,6 +23,10 @@ angular.module('todolist',[])
     var keys = ['text','order','completed'];
     var nextID = 4;
 
+    function findTask(id) {
+        return $filter('filter')(tasks,{id:id})[0];
+    }
+    
     function maxOrder() {
         var max = null;
         tasks.forEach(function(task) {
@@ -32,10 +36,13 @@ angular.module('todolist',[])
         });
         return max;
     }
-
+    
     return {
         getAllTasks: function() {
-            return tasks;
+            return $q.when({"data": {"tasks": tasks}});
+        },
+        getTask: function(id) {
+            return $q.when({"data": findTask(id)});
         },
         updateTask: function(id,data) {
             tasks.forEach(function(task) {
@@ -47,6 +54,7 @@ angular.module('todolist',[])
                     });
                 }
             });
+            return $q.when();
         },
         newTask: function(data) {
             var task = {
@@ -59,17 +67,34 @@ angular.module('todolist',[])
             tasks.push(task);
 
             nextID++;
+            return $q.when();
         }
     };
 })
-.controller('ctrl',function($scope,$filter,api) {
-    $scope.tasks = api.getAllTasks();
+.service('api',function($http) {
+    return {
+        getAllTasks: function() {
+            return $http.get('/gs/api/tasks');
+        },
+        getTask: function(id) {
+            return $http.get('/gs/api/task/' + id);
+        },
+        updateTask: function(id,data) {
+            return $http.put('/gs/api/task/' + id,data);
+        },
+        newTask: function(data) {
+            return $http.post('/gs/api/tasks',data);
+        }
+    };
+})
+.controller('ctrl', ['$scope','$filter','mockapi', function($scope,$filter,api) {
+    $scope.tasks = [];
     $scope.editing = null;
     $scope.form = {};
-
-    function findTask(id) {
-        return $filter('filter')($scope.tasks,{id:id})[0];
-    }
+    
+    api.getAllTasks().then(function(response) {
+        $scope.tasks = response.data.tasks;
+    });
 
     $scope.newTask = function() {
         $scope.editing = 'new';
@@ -77,8 +102,10 @@ angular.module('todolist',[])
     }
 
     $scope.editTask = function(id) {
-        $scope.editing = id;
-        $scope.form = angular.copy(findTask(id));
+        api.getTask(id).then(function(response) {
+            $scope.editing = id;
+            $scope.form = angular.copy(response.data);
+        });
     }
 
     $scope.save = function() {
@@ -88,10 +115,29 @@ angular.module('todolist',[])
             api.updateTask($scope.editing,$scope.form);
         }
         $scope.editing = null;
+        
+        api.getAllTasks().then(function(response) {
+            $scope.tasks = response.data.tasks;
+        });
     }
 
     $scope.finishTask = function(id) {
         //TODO check for existence
         api.updateTask(id, {completed: true});
+        
+        api.getAllTasks().then(function(response) {
+            $scope.tasks = response.data.tasks;
+        });
     }
-})
+}])
+.filter('notCompleted', function() {
+    return function(tasks) {
+        var filtered = [];
+        angular.forEach(tasks, function(task) {
+            if(!!!task.completed) {
+                filtered.push(task);
+            }
+        });
+        return filtered;
+    }
+});
