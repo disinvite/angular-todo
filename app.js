@@ -1,4 +1,20 @@
-angular.module('todolist',[])
+angular.module('todolist',['ui.router'])
+.config(function($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/');
+    $stateProvider.state('table', {
+        url: '/',
+        templateUrl: 'table.html',
+        controller: 'table'
+    }).state('new', {
+        url: '/new',
+        templateUrl: 'edit.html',
+        controller: 'new'
+    }).state('edit', {
+        url: '/edit/:id',
+        templateUrl: 'edit.html',
+        controller: 'edit'
+    });
+})
 .service('mockapi',function($q,$filter) {
     var tasks = [
         {
@@ -87,38 +103,19 @@ angular.module('todolist',[])
         }
     };
 })
-.controller('ctrl', ['$scope','$filter','mockapi', function($scope,$filter,api) {
+.controller('table', ['$scope','$state','api', function($scope,$state,api) {
     $scope.tasks = [];
-    $scope.editing = null;
-    $scope.form = {};
-    
+
     api.getAllTasks().then(function(response) {
         $scope.tasks = response.data.tasks;
     });
 
     $scope.newTask = function() {
-        $scope.editing = 'new';
-        $scope.form = {};
+        $state.go('new');
     }
 
     $scope.editTask = function(id) {
-        api.getTask(id).then(function(response) {
-            $scope.editing = id;
-            $scope.form = angular.copy(response.data);
-        });
-    }
-
-    $scope.save = function() {
-        if($scope.editing === 'new') {
-            api.newTask($scope.form);
-        } else if ($scope.editing !== null) {
-            api.updateTask($scope.editing,$scope.form);
-        }
-        $scope.editing = null;
-        
-        api.getAllTasks().then(function(response) {
-            $scope.tasks = response.data.tasks;
-        });
+        $state.go('edit',{id:id});
     }
 
     $scope.finishTask = function(id) {
@@ -128,6 +125,27 @@ angular.module('todolist',[])
         api.getAllTasks().then(function(response) {
             $scope.tasks = response.data.tasks;
         });
+    }
+}])
+.controller('new', ['$scope','$state','$stateParams','api', function($scope,$state,$stateParams,api) {
+    $scope.form = {};
+    
+    $scope.save = function() {
+        api.newTask($scope.form);
+        $state.go('table');
+    }
+}])
+.controller('edit', ['$scope','$state','$stateParams','api', function($scope,$state,$stateParams,api) {
+    $scope.form = {};
+    var id = $stateParams.id;
+    
+    api.getTask(id).then(function(response) {
+        $scope.form = angular.copy(response.data);
+    });
+    
+    $scope.save = function() {
+        api.updateTask(id,$scope.form);
+        $state.go('table');
     }
 }])
 .filter('notCompleted', function() {
