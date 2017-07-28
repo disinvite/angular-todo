@@ -105,6 +105,7 @@ angular.module('todolist',['ui.router','ngAnimate'])
 })
 .controller('table', ['$scope','$state','api', function($scope,$state,api) {
     $scope.tasks = [];
+    $scope.showCompleted = false;
 
     api.getAllTasks().then(function(response) {
         $scope.tasks = response.data.tasks;
@@ -148,11 +149,11 @@ angular.module('todolist',['ui.router','ngAnimate'])
         $state.go('table');
     }
 }])
-.filter('notCompleted', function() {
-    return function(tasks) {
+.filter('completed', function() {
+    return function(tasks,showCompleted) {
         var filtered = [];
         angular.forEach(tasks, function(task) {
-            if(!!!task.completed) {
+            if(!!task.completed == showCompleted) {
                 filtered.push(task);
             }
         });
