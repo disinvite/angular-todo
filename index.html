@@ -21,8 +21,11 @@
         </div>
         
         <div class="row">
-            <div class="col-xs-6-offset col-xs-6 text-right">
-                <button class="btn btn-default" ng-click="newTask()">New task</button>
+            <div class="col-xs-6 text-center">
+                <p>Task List</p>
+            </div>
+            <div class="col-xs-6 text-center">
+                <p>Completed Tasks</p>
             </div>
         </div>
 
@@ -37,6 +40,10 @@
                             <button class="btn btn-default" ng-click="editTask(task.id)"><span class="glyphicon glyphicon-pencil text-primary"></span></button>
                             <button class="btn btn-default" ng-click="finishTask(task.id)"><span class="glyphicon glyphicon-ok text-success"></span></button>
                         </td>
+                    </tr>
+                    <tr>
+                        <td><button class="btn btn-default" ng-click="newTask()">New task</button></td>
+                        <td>&nbsp;</td>
                     </tr>
                     <tr ng-if="filteredTasks.length == 0">
                         <td class="col-xs-12">
