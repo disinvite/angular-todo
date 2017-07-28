@@ -1,4 +1,4 @@
-angular.module('todolist',['ui.router'])
+angular.module('todolist',['ui.router','ngAnimate'])
 .config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');
     $stateProvider.state('table', {
