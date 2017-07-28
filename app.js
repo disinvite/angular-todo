@@ -130,14 +130,20 @@ angular.module('todolist',['ui.router','ngAnimate'])
 }])
 .controller('new', ['$scope','$state','$stateParams','api', function($scope,$state,$stateParams,api) {
     $scope.form = {};
-    
+    $scope.edittext = 'New Task';
+
     $scope.save = function() {
         api.newTask($scope.form);
+        $state.go('table');
+    }
+
+    $scope.cancel = function() {
         $state.go('table');
     }
 }])
 .controller('edit', ['$scope','$state','$stateParams','api', function($scope,$state,$stateParams,api) {
     $scope.form = {};
+    $scope.edittext = 'Editing Task';
     var id = $stateParams.id;
     
     api.getTask(id).then(function(response) {
@@ -146,6 +152,10 @@ angular.module('todolist',['ui.router','ngAnimate'])
     
     $scope.save = function() {
         api.updateTask(id,$scope.form);
+        $state.go('table');
+    }
+
+    $scope.cancel = function() {
         $state.go('table');
     }
 }])
