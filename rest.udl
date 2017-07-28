@@ -1,0 +1,93 @@
+Class Todo.REST Extends %CSP.REST
+{
+
+XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
+{
+<Routes>
+<Route Url="/tasks" Method="GET" Call="GetTasks" />
+<Route Url="/tasks" Method="POST" Call="NewTask" />
+<Route Url="/task/:id" Method="GET" Call="GetTask" />
+<Route Url="/task/:id" Method="PUT" Call="UpdateTask" />
+</Routes>
+}
+
+ClassMethod GetTasks() As %Status
+{
+	Set return = {"tasks": []}
+	Set rs = ##class(%SQL.Statement).%ExecDirect(,"SELECT id,text,order,completed FROM Todo.Task")
+	While rs.%Next() {
+		Do return.tasks.%Push({
+			"id":        (rs.%Get("id")),
+			"text":      (rs.%Get("text")),
+			"order":     (rs.%Get("order")),
+			"completed": (rs.%Get("completed"))
+		})
+	}
+	Write return.%ToJSON()
+	Quit 1
+}
+
+ClassMethod GetTask(id As %Integer) As %Status
+{
+	Set task = ##class(Todo.Task).%OpenId(id)
+	If '$IsObject(task) {
+		Set %response.Status = ..#HTTP404NOTFOUND
+		Quit 1
+	}
+	
+	Set obj = {
+		"id":        (task.%Id()),
+		"text":      (task.text),
+		"order":     (task.order),
+		"completed": (task.completed)
+	}
+	
+	Write obj.%ToJSON()
+	
+	Quit 1
+}
+
+ClassMethod MaxOrder() As %Integer
+{
+	Set rs = ##class(%SQL.Statement).%ExecDirect(,"SELECT MAX(order) FROM Todo.Task")
+}
+
+ClassMethod NewTask() As %Status
+{
+	Set data = ##class(%DynamicObject).%FromJSON(%request.Content)
+	Set obj = ##class(Todo.Task).%New()
+	Set obj.text = data.text
+	Set obj.completed = 0
+	Set sc = obj.%Save()
+	
+	Quit 1
+}
+
+ClassMethod UpdateTask(id As %Integer) As %Status
+{
+	Set data = ##class(%DynamicObject).%FromJSON(%request.Content)
+	
+	Set obj = ##class(Todo.Task).%OpenId(id)
+	If '$IsObject(obj) {
+		Set %response.Status = ..#HTTP404NOTFOUND
+		Quit 1
+	}
+	
+	If data.text {
+		Set obj.text = data.text
+	}
+	
+	If data.order {
+		Set obj.order = data.order
+	}
+	
+	If data.completed {
+		Set obj.completed = data.completed
+	}
+	
+	Set sc = obj.%Save()
+	
+	Quit 1
+}
+
+}

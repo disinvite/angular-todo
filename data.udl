@@ -1,0 +1,34 @@
+Class Todo.Task Extends %Persistent
+{
+
+Property text As %String;
+
+Property order As %Integer;
+
+Property completed As %Boolean;
+
+Storage Default
+{
+<Data name="TaskDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>text</Value>
+</Value>
+<Value name="3">
+<Value>order</Value>
+</Value>
+<Value name="4">
+<Value>completed</Value>
+</Value>
+</Data>
+<DataLocation>^Todo.TaskD</DataLocation>
+<DefaultData>TaskDefaultData</DefaultData>
+<IdLocation>^Todo.TaskD</IdLocation>
+<IndexLocation>^Todo.TaskI</IndexLocation>
+<StreamLocation>^Todo.TaskS</StreamLocation>
+<Type>%Library.CacheStorage</Type>
+}
+
+}
