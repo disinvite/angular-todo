@@ -5,6 +5,8 @@ Property text As %String;
 
 Property completed As %Boolean;
 
+Property important As %Boolean;
+
 Storage Default
 {
 <Data name="TaskDefaultData">
@@ -16,6 +18,9 @@ Storage Default
 </Value>
 <Value name="3">
 <Value>completed</Value>
+</Value>
+<Value name="4">
+<Value>important</Value>
 </Value>
 </Data>
 <DataLocation>^Todo.TaskD</DataLocation>
