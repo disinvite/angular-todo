@@ -3,8 +3,6 @@ Class Todo.Task Extends %Persistent
 
 Property text As %String;
 
-Property order As %Integer;
-
 Property completed As %Boolean;
 
 Storage Default
@@ -17,9 +15,6 @@ Storage Default
 <Value>text</Value>
 </Value>
 <Value name="3">
-<Value>order</Value>
-</Value>
-<Value name="4">
 <Value>completed</Value>
 </Value>
 </Data>

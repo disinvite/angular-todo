@@ -20,19 +20,16 @@ angular.module('todolist',['ui.router','ngAnimate'])
         {
             id: 1,
             text: 'task no. 1',
-            order: 1,
             completed: false
         },
         {
             id: 2,
             text: 'task no. 2',
-            order: 2,
             completed: false
         },
         {
             id: 3,
             text: 'task no. 3',
-            order: 3,
             completed: false
         }
     ];
@@ -41,16 +38,6 @@ angular.module('todolist',['ui.router','ngAnimate'])
 
     function findTask(id) {
         return $filter('filter')(tasks,{id:id})[0];
-    }
-    
-    function maxOrder() {
-        var max = null;
-        tasks.forEach(function(task) {
-            if(!max || task.order > max)  {
-                max = task.order;
-            }
-        });
-        return max;
     }
     
     return {
@@ -76,7 +63,6 @@ angular.module('todolist',['ui.router','ngAnimate'])
             var task = {
                 id: nextID,
                 text: data.text,
-                order: maxOrder() + 1,
                 completed: false
             }
 
