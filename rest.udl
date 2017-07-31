@@ -50,9 +50,14 @@ ClassMethod GetTask(id As %Integer) As %Status
 ClassMethod NewTask() As %Status
 {
 	Set data = ##class(%DynamicObject).%FromJSON(%request.Content)
+	s ^%JMS = data.%ToJSON()
 	Set obj = ##class(Todo.Task).%New()
 	Set obj.text = data.text
-	Set obj.important = data.important
+	If data.%IsDefined("important") {
+		Set obj.important = data.important
+	} Else {
+		Set obj.important = 0
+	}
 	Set obj.completed = 0
 	Set sc = obj.%Save()
 	
