@@ -3,20 +3,22 @@ angular.module('todolist').service('mockapi',function($q,$filter) {
         {
             id: 1,
             text: 'task no. 1',
-            completed: false
+            completed: false,
+            important: 0
         },
         {
             id: 2,
             text: 'task no. 2',
-            completed: false
+            completed: false,
+            important: 0
         },
         {
             id: 3,
             text: 'task no. 3',
-            completed: false
+            completed: false,
+            important: 0
         }
     ];
-    var keys = ['text','order','completed'];
     var nextID = 4;
 
     function findTask(id) {
@@ -33,11 +35,17 @@ angular.module('todolist').service('mockapi',function($q,$filter) {
         updateTask: function(id,data) {
             tasks.forEach(function(task) {
                 if(task.id == id) {
-                    keys.forEach(function(key) {
-                        if(key in data) {
-                            task[key] = data[key];
-                        }
-                    });
+                    if('text' in data) {
+                        task.text = data.text;
+                    }
+
+                    if('important' in data) {
+                        task.important = data.important;
+                    }
+                    
+                    if('completed' in data) {
+                        task.completed = data.completed;
+                    }
                 }
             });
             return $q.when();
@@ -46,7 +54,8 @@ angular.module('todolist').service('mockapi',function($q,$filter) {
             var task = {
                 id: nextID,
                 text: data.text,
-                completed: false
+                completed: false,
+                important: data.important | false
             }
 
             tasks.push(task);
