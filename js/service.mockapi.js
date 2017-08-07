@@ -31,7 +31,7 @@ angular.module('todolist').service('mockapi',function($q,$filter) {
             important: 1
         }
     ];
-    var nextID = 4;
+    var nextID = 6;
 
     function findTask(id) {
         return $filter('filter')(tasks,{id:id})[0];
