@@ -13,3 +13,7 @@ main.ng-enter-active {
     /* end with opacity 1 (fade in) */
     opacity: 1;
 }
+
+.completed {
+    font-style: italic;
+}
