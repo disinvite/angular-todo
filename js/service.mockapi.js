@@ -66,8 +66,8 @@ angular.module('todolist').service('mockapi',function($q,$filter) {
             var task = {
                 id: nextID,
                 text: data.text,
-                completed: false,
-                important: data.important | false
+                completed: 0,
+                important: data.important
             }
 
             tasks.push(task);

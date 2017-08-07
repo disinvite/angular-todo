@@ -1,5 +1,9 @@
 angular.module('todolist').controller('new', ['$scope','$state','$stateParams','mockapi', function($scope,$state,$stateParams,api) {
-    $scope.form = {};
+    $scope.form = {
+        text: "",
+        important: 0
+    };
+    
     $scope.edittext = 'New Task';
 
     $scope.save = function() {
