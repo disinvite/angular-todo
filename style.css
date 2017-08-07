@@ -15,5 +15,6 @@ main.ng-enter-active {
 }
 
 .completed {
+    color: #888;
     font-style: italic;
 }
