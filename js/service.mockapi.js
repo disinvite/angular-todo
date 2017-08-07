@@ -3,31 +3,31 @@ angular.module('todolist').service('mockapi',function($q,$filter) {
         {
             id: 1,
             text: 'task no. 1',
-            completed: false,
+            completed: 0,
             important: 0
         },
         {
             id: 2,
             text: 'task no. 2',
-            completed: false,
+            completed: 0,
             important: 0
         },
         {
             id: 3,
             text: 'task no. 3',
-            completed: false,
+            completed: 0,
             important: 0
         },
         {
             id: 4,
             text: 'important',
-            completed: false,
+            completed: 0,
             important: 1
         },
         {
             id: 5,
             text: 'important and done',
-            completed: true,
+            completed: 1,
             important: 1
         }
     ];
