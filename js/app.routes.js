@@ -1,5 +1,4 @@
-angular.module('todolist').config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/');
+angular.module('todolist').config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
     $stateProvider.state('table', {
         url: '/',
         templateUrl: 'views/table.html',
@@ -13,4 +12,5 @@ angular.module('todolist').config(function($stateProvider, $urlRouterProvider) {
         templateUrl: 'views/edit.html',
         controller: 'edit'
     });
-})
+    $urlRouterProvider.otherwise('/');
+}])
