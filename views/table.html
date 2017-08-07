@@ -1,16 +1,20 @@
 <div class="row">
-    <div class="col-xs-6 text-center">
-        <button class="btn" ng-class="{'btn-default': showCompleted, 'btn-primary': !showCompleted}" ng-click="showCompleted = false">Task List</button>
+    <div class="col-xs-6">
+        <button class="btn btn-default" ng-click="newTask()">New task</button>
     </div>
-    <div class="col-xs-6 text-center">
-        <button class="btn" ng-class="{'btn-default': !showCompleted, 'btn-primary': showCompleted}" ng-click="showCompleted = true">Completed Tasks</button>
+    <div class="col-xs-6 text-right">
+        <div class="form-group">
+            <div class="checkbox">
+                <label><input type="checkbox" value="" ng-model="showCompleted" ng-false-value="0" ng-true-value="1">Show Completed</label>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="row">
     <div class="col-xs-12">
         <table class="table table-hover">
-            <tr ng-repeat="task in filteredTasks = (tasks | completed : showCompleted) | orderBy:'-important' ">
+            <tr ng-repeat="task in filteredTasks = (tasks | completed : showCompleted) | orderBy:'-important' | orderBy:'completed' ">
                 <td class="col-xs-10">
                     <h4>
                         <span ng-class="{completed:task.completed}" ng-bind="task.text" />
@@ -22,13 +26,9 @@
                     <button ng-if="!!!task.completed" class="btn btn-default" ng-click="finishTask(task.id)"><span class="glyphicon glyphicon-ok text-success"></span></button>
                 </td>
             </tr>
-            <tr>
-                <td><button class="btn btn-default" ng-click="newTask()">New task</button></td>
-                <td>&nbsp;</td>
-            </tr>
             <tr ng-if="filteredTasks.length == 0">
                 <td class="col-xs-12">
-                    <h4>No tasks</h4>
+                    <h4 class="completed">No tasks to show.</h4>
                 </td>
             </tr>
         </table>

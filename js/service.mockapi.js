@@ -17,6 +17,18 @@ angular.module('todolist').service('mockapi',function($q,$filter) {
             text: 'task no. 3',
             completed: false,
             important: 0
+        },
+        {
+            id: 4,
+            text: 'important',
+            completed: false,
+            important: 1
+        },
+        {
+            id: 5,
+            text: 'important and done',
+            completed: true,
+            important: 1
         }
     ];
     var nextID = 4;
