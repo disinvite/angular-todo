@@ -11,6 +11,9 @@ angular.module('todolist').service('api',function($http) {
         },
         newTask: function(data) {
             return $http.post('/gs/api/tasks',data);
+        },
+        finishTask: function(id) {
+            return $http.put('/gs/api/task/' + id,{completed:1});
         }
     };
 })

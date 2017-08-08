@@ -74,6 +74,14 @@ angular.module('todolist').service('mockapi',function($q,$filter) {
 
             nextID++;
             return $q.when();
+        },
+        finishTask: function(id) {
+            tasks.forEach(function(task) {
+                if(task.id == id) {
+                    task.completed = 1;
+                }
+            });
+            return $q.when();
         }
     };
 })

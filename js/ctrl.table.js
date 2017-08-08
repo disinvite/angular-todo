@@ -15,8 +15,7 @@ angular.module('todolist').controller('table', ['$scope','$state','mockapi', fun
     }
 
     $scope.finishTask = function(id) {
-        //TODO check for existence
-        api.updateTask(id, {completed: true});
+        api.finishTask(id);
         
         api.getAllTasks().then(function(response) {
             $scope.tasks = response.data.tasks;
