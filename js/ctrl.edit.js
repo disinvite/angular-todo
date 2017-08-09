@@ -1,4 +1,4 @@
-angular.module('todolist').controller('edit', ['$scope','$state','$stateParams','mockapi', function($scope,$state,$stateParams,api) {
+angular.module('todolist').controller('edit', ['$scope','$state','$stateParams','api', function($scope,$state,$stateParams,api) {
     $scope.form = {};
     $scope.edittext = 'Editing Task';
     var id = $stateParams.id;

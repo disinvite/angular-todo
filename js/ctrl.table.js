@@ -1,4 +1,4 @@
-angular.module('todolist').controller('table', ['$scope','$state','mockapi', function($scope,$state,api) {
+angular.module('todolist').controller('table', ['$scope','$state','api', function($scope,$state,api) {
     $scope.tasks = [];
     $scope.showCompleted = false;
 

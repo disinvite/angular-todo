@@ -1,4 +1,4 @@
-angular.module('todolist').controller('new', ['$scope','$state','$stateParams','mockapi', function($scope,$state,$stateParams,api) {
+angular.module('todolist').controller('new', ['$scope','$state','$stateParams','api', function($scope,$state,$stateParams,api) {
     $scope.form = {
         text: "",
         important: 0
