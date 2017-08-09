@@ -8,6 +8,7 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <Route Url="/tasks" Method="POST" Call="NewTask" />
 <Route Url="/task/:id" Method="GET" Call="GetTask" />
 <Route Url="/task/:id" Method="PUT" Call="UpdateTask" />
+<Route Url="/task/:id" Method="DELETE" Call="DeleteTask" />
 </Routes>
 }
 
@@ -50,14 +51,9 @@ ClassMethod GetTask(id As %Integer) As %Status
 ClassMethod NewTask() As %Status
 {
 	Set data = ##class(%DynamicObject).%FromJSON(%request.Content)
-	s ^%JMS = data.%ToJSON()
 	Set obj = ##class(Todo.Task).%New()
 	Set obj.text = data.text
-	If data.%IsDefined("important") {
-		Set obj.important = data.important
-	} Else {
-		Set obj.important = 0
-	}
+	Set obj.important = data.important
 	Set obj.completed = 0
 	Set sc = obj.%Save()
 	
@@ -87,6 +83,12 @@ ClassMethod UpdateTask(id As %Integer) As %Status
 	}
 	
 	Set sc = obj.%Save()
+	Quit 1
+}
+
+ClassMethod DeleteTask(id As %Integer) As %Status
+{
+	Do ##class(Todo.Task).%DeleteId(id)
 	Quit 1
 }
 

@@ -5,7 +5,7 @@ angular.module('todolist').config(['$stateProvider', '$urlRouterProvider', funct
         controller: 'table'
     }).state('new', {
         url: '/new',
-        templateUrl: 'views/edit.html',
+        templateUrl: 'views/new.html',
         controller: 'new'
     }).state('edit', {
         url: '/edit/:id',

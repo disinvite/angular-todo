@@ -4,8 +4,6 @@ angular.module('todolist').controller('new', ['$scope','$state','$stateParams','
         important: 0
     };
     
-    $scope.edittext = 'New Task';
-
     $scope.save = function() {
         api.newTask($scope.form);
         $state.go('table');

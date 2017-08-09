@@ -9,6 +9,9 @@ angular.module('todolist').service('api',function($http) {
         updateTask: function(id,data) {
             return $http.put('http://localhost:57772/gs/api/task/' + id, data);
         },
+        deleteTask: function(id,data) {
+            return $http.delete('http://localhost:57772/gs/api/task/' + id);
+        },
         newTask: function(data) {
             return $http.post('http://localhost:57772/gs/api/tasks', data);
         },
