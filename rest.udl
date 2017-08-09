@@ -51,11 +51,16 @@ ClassMethod GetTask(id As %Integer) As %Status
 ClassMethod NewTask() As %Status
 {
 	Set data = ##class(%DynamicObject).%FromJSON(%request.Content)
-	Set obj = ##class(Todo.Task).%New()
-	Set obj.text = data.text
-	Set obj.important = data.important
-	Set obj.completed = 0
-	Set sc = obj.%Save()
+	Set task = ##class(Todo.Task).%New()
+	Set task.text = data.text
+	
+	If data.%IsDefined("important") {
+		Set task.important = data.important
+	} Else {
+		Set task.important = 0
+	}
+	Set task.completed = 0
+	Do task.%Save()
 	
 	Quit 1
 }
@@ -64,31 +69,36 @@ ClassMethod UpdateTask(id As %Integer) As %Status
 {
 	Set data = ##class(%DynamicObject).%FromJSON(%request.Content)
 	
-	Set obj = ##class(Todo.Task).%OpenId(id)
-	If '$IsObject(obj) {
+	Set task = ##class(Todo.Task).%OpenId(id)
+	If '$IsObject(task) {
 		Set %response.Status = ..#HTTP404NOTFOUND
 		Quit 1
 	}
 	
 	If data.%IsDefined("text") {
-		Set obj.text = data.text
+		Set task.text = data.text
 	}
 	
 	If data.%IsDefined("important") {
-		Set obj.important = data.important
+		Set task.important = data.important
 	}
 	
 	If data.%IsDefined("completed") {
-		Set obj.completed = data.completed
+		Set task.completed = data.completed
 	}
 	
-	Set sc = obj.%Save()
+	Do task.%Save()
 	Quit 1
 }
 
 ClassMethod DeleteTask(id As %Integer) As %Status
 {
+	If '##class(Todo.Task).%ExistsId(id) {
+		Set %response.Status = ..#HTTP404NOTFOUND
+		Quit 1
+	}
 	Do ##class(Todo.Task).%DeleteId(id)
+	
 	Quit 1
 }
 
